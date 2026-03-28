@@ -399,8 +399,11 @@
     <script type="module" src="js/main.js"></script>
     <script>
         let deviceStream = null;
-        let cocoModel = null;
         let detectionLoop = null;
+        let useServerYolo = true; // Try server YOLO first, fallback to COCO-SSD
+        let cocoModel = null;
+        let frameCanvas = document.createElement('canvas');
+        let isDetecting = false;
 
         const WASTE_MAP = {
             'bottle': 'Plastic Debris', 'wine glass': 'Glass Debris',
@@ -425,7 +428,7 @@
             if (deviceStream) {
                 cancelAnimationFrame(detectionLoop);
                 deviceStream.getTracks().forEach(t => t.stop());
-                deviceStream = null;
+                deviceStream = null; isDetecting = false;
                 video.srcObject = null;
                 video.classList.add('hidden');
                 canvas.classList.add('hidden');
@@ -435,61 +438,104 @@
             }
 
             try {
-                deviceStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                deviceStream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 }, audio: false });
                 video.srcObject = deviceStream;
                 video.classList.remove('hidden');
                 img.classList.add('hidden');
                 btn.innerHTML = '<span class="material-symbols-outlined text-[16px] text-red-400">stop_circle</span><span class="text-[10px] font-bold uppercase tracking-wider text-red-400">Stop Cam</span>';
 
-                if (!cocoModel) {
-                    loading.classList.remove('hidden');
-                    cocoModel = await cocoSsd.load({ base: 'lite_mobilenet_v2' });
-                    loading.classList.add('hidden');
-                }
-
                 await new Promise(r => { video.onloadedmetadata = r; });
                 canvas.classList.remove('hidden');
-                runDetection(video, canvas);
+                runDetectionLoop(video, canvas, loading);
 
             } catch (err) {
-                loading.classList.add('hidden');
                 alert('Camera access denied. Please allow camera permissions in your browser.');
                 console.error('Camera error:', err);
             }
         }
 
-        function runDetection(video, canvas) {
+        function captureFrame(video) {
+            frameCanvas.width = video.videoWidth;
+            frameCanvas.height = video.videoHeight;
+            frameCanvas.getContext('2d').drawImage(video, 0, 0);
+            return frameCanvas.toDataURL('image/jpeg', 0.7);
+        }
+
+        function drawBoxes(ctx, detections, engineLabel) {
+            detections.forEach(d => {
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(d.x, d.y, d.w, d.h);
+                const text = 'WASTE: ' + d.label + ' (' + d.conf + '%)';
+                ctx.font = 'bold 14px Inter, sans-serif';
+                const tw = ctx.measureText(text).width;
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(d.x, Math.max(0, d.y - 24), tw + 10, 24);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(text, d.x + 5, Math.max(16, d.y - 6));
+            });
+            ctx.fillStyle = 'rgba(0,0,0,0.6)';
+            ctx.fillRect(8, 8, 320, 28);
+            ctx.fillStyle = '#00e5ff';
+            ctx.font = 'bold 13px Inter, sans-serif';
+            ctx.fillText('HYDRAMETRIC AI · ' + engineLabel + ' · LIVE', 14, 27);
+        }
+
+        async function runDetectionLoop(video, canvas, loading) {
             const ctx = canvas.getContext('2d');
+
             async function detect() {
                 if (!deviceStream) return;
                 canvas.width = video.videoWidth || 640;
                 canvas.height = video.videoHeight || 480;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                try {
-                    const predictions = await cocoModel.detect(video);
-                    predictions.forEach(pred => {
-                        const wasteLabel = WASTE_MAP[pred.class];
-                        if (!wasteLabel && wasteLabel !== undefined) return;
-                        const label = wasteLabel || pred.class;
-                        const conf = Math.round(pred.score * 100);
-                        const [x, y, w, h] = pred.bbox;
-                        ctx.strokeStyle = '#ef4444';
-                        ctx.lineWidth = 3;
-                        ctx.strokeRect(x, y, w, h);
-                        const text = 'WASTE: ' + label + ' (' + conf + '%)';
-                        ctx.font = 'bold 14px Inter, sans-serif';
-                        const tw = ctx.measureText(text).width;
-                        ctx.fillStyle = '#ef4444';
-                        ctx.fillRect(x, Math.max(0, y - 24), tw + 10, 24);
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fillText(text, x + 5, Math.max(16, y - 6));
-                    });
-                    ctx.fillStyle = 'rgba(0,0,0,0.55)';
-                    ctx.fillRect(8, 8, 295, 28);
-                    ctx.fillStyle = '#00e5ff';
-                    ctx.font = 'bold 13px Inter, sans-serif';
-                    ctx.fillText('HYDRAMETRIC AI · COCO-SSD ENGINE · LIVE', 14, 27);
-                } catch(e) {}
+
+                if (useServerYolo && !isDetecting) {
+                    isDetecting = true;
+                    try {
+                        const b64 = captureFrame(video);
+                        const res = await fetch('/api/detect', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ image: b64 })
+                        });
+                        const data = await res.json();
+                        if (data.engine === 'yolo') {
+                            drawBoxes(ctx, data.detections, 'YOLOv26 ENGINE');
+                            isDetecting = false;
+                            detectionLoop = requestAnimationFrame(detect);
+                            return;
+                        } else if (data.engine === 'unavailable') {
+                            // YOLO not on server, fall back to browser COCO-SSD
+                            useServerYolo = false;
+                        }
+                    } catch(e) {
+                        useServerYolo = false; // fallback on network error
+                    }
+                    isDetecting = false;
+                }
+
+                // Fallback: browser COCO-SSD
+                if (!useServerYolo) {
+                    if (!cocoModel) {
+                        loading.classList.remove('hidden');
+                        cocoModel = await cocoSsd.load({ base: 'mobilenet_v2' });
+                        loading.classList.add('hidden');
+                    }
+                    try {
+                        const preds = await cocoModel.detect(video);
+                        const detections = preds
+                            .filter(p => WASTE_MAP[p.class])
+                            .map(p => ({
+                                label: WASTE_MAP[p.class],
+                                conf: Math.round(p.score * 100),
+                                x: p.bbox[0], y: p.bbox[1],
+                                w: p.bbox[2], h: p.bbox[3]
+                            }));
+                        drawBoxes(ctx, detections, 'COCO-SSD ENGINE');
+                    } catch(e) {}
+                }
+
                 detectionLoop = requestAnimationFrame(detect);
             }
             detect();

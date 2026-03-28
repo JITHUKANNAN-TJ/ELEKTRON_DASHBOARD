@@ -67,6 +67,55 @@ def update_camera_status(status: CameraStatus):
     CAMERA_ACTIVE = status.active
     return {"status": "success", "active": CAMERA_ACTIVE}
 
+class FrameData(BaseModel):
+    image: str  # base64 encoded JPEG frame from browser webcam
+
+WASTE_MAPPING = {
+    'bottle': 'Plastic Debris', 'wine glass': 'Glass Debris',
+    'cup': 'Plastic Cup', 'fork': 'Metal Waste', 'knife': 'Metal Waste',
+    'spoon': 'Metal Waste', 'bowl': 'Plastic Container',
+    'backpack': 'Submerged Bag', 'umbrella': 'Debris',
+    'handbag': 'Submerged Bag', 'suitcase': 'Large Debris',
+    'sports ball': 'Floating Plastic', 'cell phone': 'E-Waste',
+    'laptop': 'E-Waste', 'mouse': 'E-Waste', 'keyboard': 'E-Waste',
+    'remote': 'E-Waste', 'book': 'Paper Waste', 'clock': 'E-Waste',
+    'vase': 'Ceramic Debris', 'scissors': 'Metal Debris',
+    'teddy bear': 'Textile Waste', 'toothbrush': 'Plastic Waste'
+}
+
+@app.post("/api/detect")
+async def detect_frame(frame: FrameData):
+    """Receive a base64 image from the browser webcam, run YOLO, return detections."""
+    if not HAS_CV or not HAS_YOLO:
+        return {"detections": [], "engine": "unavailable"}
+    try:
+        import base64
+        # Decode base64 image
+        img_data = base64.b64decode(frame.image.split(',')[-1])
+        nparr = np.frombuffer(img_data, np.uint8)
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        if img is None:
+            return {"detections": [], "engine": "error"}
+        # Run YOLO detection
+        results = model(img, stream=False)
+        detections = []
+        for r in results:
+            for box in r.boxes:
+                cls_id = int(box.cls[0])
+                class_name = model.names[cls_id]
+                if class_name in WASTE_MAPPING:
+                    conf = float(box.conf[0])
+                    x1, y1, x2, y2 = map(float, box.xyxy[0])
+                    detections.append({
+                        "label": WASTE_MAPPING[class_name],
+                        "conf": round(conf * 100),
+                        "x": x1, "y": y1,
+                        "w": x2 - x1, "h": y2 - y1
+                    })
+        return {"detections": detections, "engine": "yolo"}
+    except Exception as e:
+        return {"detections": [], "engine": "error", "detail": str(e)}
+
 if HAS_YOLO:
     print("Loading YOLOv26 AI Model... this may take a moment to download weights on first run.")
     try:

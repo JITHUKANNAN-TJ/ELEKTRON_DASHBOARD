@@ -7,6 +7,8 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>HydraMetric Console | River Pollution Monitoring</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
@@ -224,6 +226,15 @@
                     alt="Live Drone View" />
                 <!-- Device webcam (getUserMedia - runs in browser, no server needed) -->
                 <video id="device-cam-feed" class="w-full h-full object-cover hidden" autoplay playsinline muted></video>
+                <!-- Canvas overlay for AI bounding boxes -->
+                <canvas id="detection-canvas" class="absolute inset-0 w-full h-full hidden" style="pointer-events:none;"></canvas>
+                <!-- AI Loading indicator -->
+                <div id="ai-loading" class="hidden absolute inset-0 flex items-center justify-center bg-black/60 z-20">
+                    <div class="text-center text-white">
+                        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-400 mx-auto mb-3"></div>
+                        <p class="text-xs font-bold uppercase tracking-widest text-cyan-300">Loading AI Model...</p>
+                    </div>
+                </div>
                 <div class="absolute top-4 left-4 flex gap-2">
                     <span
                         class="px-2 py-1 bg-error/90 backdrop-blur text-white font-bold text-[10px] rounded animate-pulse">LIVE
@@ -388,18 +399,36 @@
     <script type="module" src="js/main.js"></script>
     <script>
         let deviceStream = null;
+        let cocoModel = null;
+        let detectionLoop = null;
+
+        const WASTE_MAP = {
+            'bottle': 'Plastic Debris', 'wine glass': 'Glass Debris',
+            'cup': 'Plastic Cup', 'fork': 'Metal Waste', 'knife': 'Metal Waste',
+            'spoon': 'Metal Waste', 'bowl': 'Plastic Container',
+            'backpack': 'Submerged Bag', 'umbrella': 'Debris',
+            'handbag': 'Submerged Bag', 'suitcase': 'Large Debris',
+            'sports ball': 'Floating Plastic', 'cell phone': 'E-Waste',
+            'laptop': 'E-Waste', 'mouse': 'E-Waste', 'keyboard': 'E-Waste',
+            'remote': 'E-Waste', 'book': 'Paper Waste', 'clock': 'E-Waste',
+            'vase': 'Ceramic Debris', 'scissors': 'Metal Debris',
+            'teddy bear': 'Textile Waste', 'toothbrush': 'Plastic Waste'
+        };
 
         async function startDeviceCamera() {
             const video = document.getElementById('device-cam-feed');
             const img = document.getElementById('ai-feed');
+            const canvas = document.getElementById('detection-canvas');
+            const loading = document.getElementById('ai-loading');
             const btn = document.querySelector('[onclick="startDeviceCamera()"]');
 
-            // If already using device camera, stop it
             if (deviceStream) {
+                cancelAnimationFrame(detectionLoop);
                 deviceStream.getTracks().forEach(t => t.stop());
                 deviceStream = null;
                 video.srcObject = null;
                 video.classList.add('hidden');
+                canvas.classList.add('hidden');
                 img.classList.remove('hidden');
                 btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">laptop_mac</span><span class="text-[10px] font-bold uppercase tracking-wider">My Camera</span>';
                 return;
@@ -411,10 +440,59 @@
                 video.classList.remove('hidden');
                 img.classList.add('hidden');
                 btn.innerHTML = '<span class="material-symbols-outlined text-[16px] text-red-400">stop_circle</span><span class="text-[10px] font-bold uppercase tracking-wider text-red-400">Stop Cam</span>';
+
+                if (!cocoModel) {
+                    loading.classList.remove('hidden');
+                    cocoModel = await cocoSsd.load({ base: 'lite_mobilenet_v2' });
+                    loading.classList.add('hidden');
+                }
+
+                await new Promise(r => { video.onloadedmetadata = r; });
+                canvas.classList.remove('hidden');
+                runDetection(video, canvas);
+
             } catch (err) {
-                alert('Camera access denied or not available. Please allow camera permission in your browser.');
+                loading.classList.add('hidden');
+                alert('Camera access denied. Please allow camera permissions in your browser.');
                 console.error('Camera error:', err);
             }
+        }
+
+        function runDetection(video, canvas) {
+            const ctx = canvas.getContext('2d');
+            async function detect() {
+                if (!deviceStream) return;
+                canvas.width = video.videoWidth || 640;
+                canvas.height = video.videoHeight || 480;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                try {
+                    const predictions = await cocoModel.detect(video);
+                    predictions.forEach(pred => {
+                        const wasteLabel = WASTE_MAP[pred.class];
+                        if (!wasteLabel && wasteLabel !== undefined) return;
+                        const label = wasteLabel || pred.class;
+                        const conf = Math.round(pred.score * 100);
+                        const [x, y, w, h] = pred.bbox;
+                        ctx.strokeStyle = '#ef4444';
+                        ctx.lineWidth = 3;
+                        ctx.strokeRect(x, y, w, h);
+                        const text = 'WASTE: ' + label + ' (' + conf + '%)';
+                        ctx.font = 'bold 14px Inter, sans-serif';
+                        const tw = ctx.measureText(text).width;
+                        ctx.fillStyle = '#ef4444';
+                        ctx.fillRect(x, Math.max(0, y - 24), tw + 10, 24);
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillText(text, x + 5, Math.max(16, y - 6));
+                    });
+                    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+                    ctx.fillRect(8, 8, 295, 28);
+                    ctx.fillStyle = '#00e5ff';
+                    ctx.font = 'bold 13px Inter, sans-serif';
+                    ctx.fillText('HYDRAMETRIC AI · COCO-SSD ENGINE · LIVE', 14, 27);
+                } catch(e) {}
+                detectionLoop = requestAnimationFrame(detect);
+            }
+            detect();
         }
     </script>
 </body>

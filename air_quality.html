@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>HydraMetric Console | Analytics &amp; Logs</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed": "#3a0b00",
+                        "tertiary-fixed": "#ffdbd0",
+                        "on-tertiary-fixed-variant": "#852400",
+                        "on-tertiary-container": "#ffe5de",
+                        "on-primary-container": "#d5efff",
+                        "inverse-on-surface": "#f1f1f1",
+                        "inverse-surface": "#2f3131",
+                        "tertiary-fixed-dim": "#ffb59e",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f3f3f3",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#004d66",
+                        "primary": "#005975",
+                        "outline": "#70787e",
+                        "on-secondary-fixed-variant": "#2d5000",
+                        "primary-container": "#1c7293",
+                        "on-surface": "#1a1c1c",
+                        "background": "#f9f9f9",
+                        "outline-variant": "#bfc8ce",
+                        "on-secondary-fixed": "#0f2000",
+                        "secondary-container": "#b7f473",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#dadada",
+                        "surface": "#f9f9f9",
+                        "on-secondary-container": "#427000",
+                        "surface-bright": "#f9f9f9",
+                        "surface-container-high": "#e8e8e8",
+                        "on-error-container": "#93000a",
+                        "secondary": "#3e6a00",
+                        "inverse-primary": "#87d0f4",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#006686",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-surface-variant": "#3f484d",
+                        "surface-variant": "#e2e2e2",
+                        "error": "#ba1a1a",
+                        "surface-container": "#eeeeee",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary": "#972c02",
+                        "primary-fixed": "#c0e8ff",
+                        "primary-fixed-dim": "#87d0f4",
+                        "tertiary-container": "#b8431a",
+                        "on-primary-fixed": "#001e2b",
+                        "secondary-fixed-dim": "#9dd75a",
+                        "secondary-fixed": "#b7f473",
+                        "on-background": "#1a1c1c"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .chart-gradient {
+            background: linear-gradient(to bottom, rgba(28, 114, 147, 0.2) 0%, rgba(28, 114, 147, 0) 100%);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background font-body text-on-surface min-h-screen pt-20 pb-32">
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm border-b border-outline-variant/15">
+        <div class="flex items-center justify-between px-8 py-3 w-full max-w-[1920px] mx-auto">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="ELEKTRON Logo" class="h-10 w-auto object-contain mix-blend-multiply dark:mix-blend-screen" onerror="this.onerror=null; this.outerHTML='<span class=\'material-symbols-outlined text-primary text-3xl\'>science</span>';" />
+                    <h1 class="font-headline font-black text-xl tracking-[0.1em] text-on-surface uppercase pr-1">ELEKTRON</h1>
+                </div>
+                <div class="hidden md:flex items-center gap-6 font-headline text-sm tracking-tight">
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-600 transition-colors"
+                        href="index.html">Dashboard</a>
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-600 transition-colors"
+                        href="map.html">Map Analysis</a>
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-600 transition-colors"
+                        href="database.html">River Database</a>
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-600 transition-colors"
+                        href="analytics.html">Analytics</a>
+                    <a class="text-cyan-700 dark:text-cyan-400 border-b-2 border-cyan-700 dark:border-cyan-400 pb-1 font-medium"
+                        href="air_quality.html">Air Quality</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative group">
+                    <span
+                        class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full cursor-pointer transition-all">notifications</span>
+                </div>
+                <div
+                    class="h-8 w-8 rounded-full bg-cyan-800 text-white flex items-center justify-center font-bold text-xs">
+                    JD</div>
+            </div>
+        </div>
+    </nav>
+    <main class="max-w-7xl mx-auto px-6 mt-8 space-y-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div class="space-y-1">
+                <p class="text-xs font-bold uppercase tracking-[0.15em] text-on-surface-variant/70">Atmospheric Data</p>
+                <h2 class="font-headline text-3xl font-bold text-primary">Live Air Quality Tracker</h2>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <div class="px-5 py-2.5 rounded-xl bg-surface-container-highest text-primary font-medium text-sm flex items-center gap-2 hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined text-lg" data-icon="location_city">location_city</span>
+                    <select id="city-selector" onchange="fetchCityAQI(this.value)" class="bg-transparent border-none text-sm font-bold text-primary focus:ring-0 cursor-pointer outline-none">
+                        <optgroup label="Metros">
+                            <option value="Delhi">Delhi</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Chennai">Chennai</option>
+                            <option value="Kolkata">Kolkata</option>
+                            <option value="Bengaluru">Bengaluru</option>
+                        </optgroup>
+                        <optgroup label="River Cities">
+                            <option value="Coimbatore">Coimbatore (Noyyal)</option>
+                            <option value="Haridwar">Haridwar (Ganga)</option>
+                            <option value="Guwahati">Guwahati (Brahmaputra)</option>
+                            <option value="Nashik">Nashik (Godavari)</option>
+                            <option value="Vijayawada">Vijayawada (Krishna)</option>
+                            <option value="Jabalpur">Jabalpur (Narmada)</option>
+                            <option value="Mysuru">Mysuru (Kaveri)</option>
+                            <option value="Cuttack">Cuttack (Mahanadi)</option>
+                            <option value="Surat">Surat (Tapi)</option>
+                            <option value="Ludhiana">Ludhiana (Sutlej)</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 shadow-sm relative min-h-[400px]">
+            <div id="loading-indicator" class="absolute inset-0 flex flex-col items-center justify-center bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm z-10 hidden rounded-xl">
+                <span class="material-symbols-outlined text-4xl text-primary animate-spin">sync</span>
+                <p class="mt-4 font-headline font-bold tracking-widest text-primary uppercase text-sm">Fetching Data...</p>
+            </div>
+            
+            <div class="flex justify-between items-start mb-8 border-b border-outline-variant/15 pb-4">
+                <div>
+                    <h3 class="font-headline text-xl font-bold text-on-surface" id="target-city-name">Delhi Air Quality</h3>
+                    <p class="text-sm text-on-surface-variant">Real-time telemetry from Data.gov.in</p>
+                </div>
+                <div class="flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                    <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">LIVE API</span>
+                </div>
+            </div>
+
+            <div id="pollutants-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+        </div>
+</main>
+    <!-- BottomNavBar -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl docked full-width rounded-t-xl border-t border-slate-200/50 dark:border-slate-800/50 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+        <div class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-2 hover:text-[#1C7293] transition-colors cursor-pointer"
+            onclick="window.location.href='index.html'">
+            <span class="material-symbols-outlined mb-1" data-icon="dashboard">dashboard</span>
+            <span class="font-['Inter'] font-medium text-[10px] uppercase tracking-wider">Dashboard</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-2 hover:text-[#1C7293] transition-colors cursor-pointer">
+            <span class="material-symbols-outlined mb-1" data-icon="map">map</span>
+            <span class="font-['Inter'] font-medium text-[10px] uppercase tracking-wider">Map</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-4 py-2 hover:text-[#1C7293] transition-colors cursor-pointer">
+            <span class="material-symbols-outlined mb-1"
+                data-icon="air">air</span>
+            <span class="font-['Inter'] font-medium text-[10px] uppercase tracking-wider">Air Quality</span>
+        </div>
+        <div
+            class="flex flex-col items-center justify-center bg-[#1C7293]/10 dark:bg-[#1C7293]/20 text-[#005975] dark:text-[#1C7293] rounded-xl px-4 py-2 scale-90 duration-200 cursor-default">
+            <span class="material-symbols-outlined mb-1" data-icon="analytics">analytics</span>
+            <span class="font-['Inter'] font-medium text-[10px] uppercase tracking-wider">Analytics</span>
+        </div>
+    </nav>
+    
+
+    <script>
+        async function fetchCityAQI(city) {
+            const grid = document.getElementById("pollutants-grid");
+            const loading = document.getElementById("loading-indicator");
+            const title = document.getElementById("target-city-name");
+            
+            loading.classList.remove("hidden");
+            title.innerText = `${city} Air Quality`;
+            grid.innerHTML = "";
+
+            try {
+                const url = `http://localhost:5000/api/aqi?city=${city}&limit=50`;
+                
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                
+                const res = await fetch(url, { signal: controller.signal });
+                clearTimeout(timeoutId);
+                
+                if (!res.ok) throw new Error("API Limit or Network");
+                const data = await res.json();
+                const records = data.records;
+                
+                if (records && records.length > 0) {
+                    const uniquePollutants = {};
+                    records.forEach(r => {
+                        if(!uniquePollutants[r.pollutant_id]) {
+                            uniquePollutants[r.pollutant_id] = r;
+                        }
+                    });
+                    
+                    Object.values(uniquePollutants).forEach(rec => {
+                        const val = parseInt(rec.avg_value || rec.max_value || 0);
+                        let statusColor = "primary";
+                        let statusBg = "primary/10";
+                        let statusText = "GOOD";
+
+                        if(val > 100 && val <= 200) { statusColor = "secondary"; statusBg = "secondary/10"; statusText = "MODERATE"; }
+                        else if(val > 200 && val <= 300) { statusColor = "tertiary"; statusBg = "tertiary/10"; statusText = "POOR"; }
+                        else if(val > 300) { statusColor = "error"; statusBg = "error/10"; statusText = "SEVERE"; }
+
+                        const cardHTML = `
+                        <div class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">${rec.pollutant_id}</span>
+                                <span class="text-[8px] px-2 py-0.5 bg-${statusBg} text-${statusColor} rounded-full font-black">${statusText}</span>
+                            </div>
+                            <div class="flex items-end gap-2 mb-2">
+                                <p class="text-3xl font-black text-on-surface font-mono">${val}</p>
+                                <span class="text-xs text-outline font-medium font-mono pb-1">µg/m³</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 text-on-surface-variant/70">
+                                <span class="material-symbols-outlined text-[14px]">sensors</span>
+                                <p class="text-[10px] font-medium truncate" title="${rec.station}">${rec.station}</p>
+                            </div>
+                        </div>`;
+                        grid.innerHTML += cardHTML;
+                    });
+                } else {
+                    grid.innerHTML = `<div class="col-span-full rounded-xl bg-error/10 text-error p-6 text-center font-bold">No Data Available for ${city}</div>`;
+                }
+            } catch(e) {
+                grid.innerHTML = `<div class="col-span-full rounded-xl bg-error/10 text-error p-6 text-center font-bold">Failed to Fetch Data</div>`;
+                console.warn("City AQI Fetch Error:", e);
+            }
+            
+            loading.classList.add("hidden");
+        }
+
+        fetchCityAQI("Delhi");
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,275 @@
+===DB_ROWS===
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Ganga</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Uttarakhand)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">270</span></td>
+                        <td class="px-6 py-4 text-xs">Agricultural Runoff, Plastics</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Brahmaputra</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Tibet)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">120</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Yamuna</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Uttarakhand)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-error">390</span></td>
+                        <td class="px-6 py-4 text-xs">Sewage, Industrial Waste, Heavy Metals</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-error/10 text-error text-[10px] font-bold uppercase rounded-full">Critical Warning</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Godavari</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Maharashtra)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">180</span></td>
+                        <td class="px-6 py-4 text-xs">Agricultural Runoff, Plastics</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Krishna</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Maharashtra)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">150</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Narmada</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Madhya Pradesh)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-secondary">108</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-secondary/10 text-secondary text-[10px] font-bold uppercase rounded-full">Acceptable</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Kaveri</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Karnataka)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">132</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Mahanadi</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Chhattisgarh)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">192</span></td>
+                        <td class="px-6 py-4 text-xs">Agricultural Runoff, Plastics</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Tapi</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Madhya Pradesh)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">120</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Sutlej</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Tibet)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">168</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+===OPTGROUP===
+                    <optgroup label="Rivers of India">
+                        <option value="india_ganga">Ganga (Uttarakhand)</option>
+                        <option value="india_brahmaputra">Brahmaputra (Tibet)</option>
+                        <option value="india_yamuna">Yamuna (Uttarakhand)</option>
+                        <option value="india_godavari">Godavari (Maharashtra)</option>
+                        <option value="india_krishna">Krishna (Maharashtra)</option>
+                        <option value="india_narmada">Narmada (Madhya Pradesh)</option>
+                        <option value="india_kaveri">Kaveri (Karnataka)</option>
+                        <option value="india_mahanadi">Mahanadi (Chhattisgarh)</option>
+                        <option value="india_tapi">Tapi (Madhya Pradesh)</option>
+                        <option value="india_sutlej">Sutlej (Tibet)</option>
+                    </optgroup>
+===REGIONS===
+            "india_ganga": {
+                        "lat": 30.9947,
+                        "lng": 78.9398,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 30.9947,
+                                                "lng": 78.9398,
+                                                "type": "critical",
+                                                "name": "Ganga Origin",
+                                                "bod": "67"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            },
+            "india_brahmaputra": {
+                        "lat": 30.3333,
+                        "lng": 82.0,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 30.3333,
+                                                "lng": 82.0,
+                                                "type": "warning",
+                                                "name": "Brahmaputra Origin",
+                                                "bod": "30"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            },
+            "india_yamuna": {
+                        "lat": 31.014,
+                        "lng": 78.46,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 31.014,
+                                                "lng": 78.46,
+                                                "type": "critical",
+                                                "name": "Yamuna Origin",
+                                                "bod": "97"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            },
+            "india_godavari": {
+                        "lat": 19.9333,
+                        "lng": 73.5333,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 19.9333,
+                                                "lng": 73.5333,
+                                                "type": "warning",
+                                                "name": "Godavari Origin",
+                                                "bod": "45"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            },
+            "india_krishna": {
+                        "lat": 17.9237,
+                        "lng": 73.6586,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 17.9237,
+                                                "lng": 73.6586,
+                                                "type": "warning",
+                                                "name": "Krishna Origin",
+                                                "bod": "37"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            },
+            "india_narmada": {
+                        "lat": 22.671,
+                        "lng": 81.758,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 22.671,
+                                                "lng": 81.758,
+                                                "type": "warning",
+                                                "name": "Narmada Origin",
+                                                "bod": "27"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            },
+            "india_kaveri": {
+                        "lat": 12.385,
+                        "lng": 75.491,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 12.385,
+                                                "lng": 75.491,
+                                                "type": "warning",
+                                                "name": "Kaveri Origin",
+                                                "bod": "33"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            },
+            "india_mahanadi": {
+                        "lat": 20.288,
+                        "lng": 81.933,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 20.288,
+                                                "lng": 81.933,
+                                                "type": "warning",
+                                                "name": "Mahanadi Origin",
+                                                "bod": "48"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            },
+            "india_tapi": {
+                        "lat": 21.433,
+                        "lng": 75.5,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 21.433,
+                                                "lng": 75.5,
+                                                "type": "warning",
+                                                "name": "Tapi Origin",
+                                                "bod": "30"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            },
+            "india_sutlej": {
+                        "lat": 30.683,
+                        "lng": 81.233,
+                        "zoom": 13,
+                        "markers": [
+                                    {
+                                                "lat": 30.683,
+                                                "lng": 81.233,
+                                                "type": "warning",
+                                                "name": "Sutlej Origin",
+                                                "bod": "42"
+                                    }
+                        ],
+                        "droneOffset": {
+                                    "lat": 0.005,
+                                    "lng": 0.005
+                        }
+            }

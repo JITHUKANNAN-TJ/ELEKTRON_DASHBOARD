@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>HydraMetric Console | River Database</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#005975",
+                        "surface": "#f9f9f9",
+                        "surface-container-low": "#f3f3f3",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#bfc8ce",
+                        "on-surface": "#1a1c1c",
+                        "on-surface-variant": "#3f484d",
+                        "error": "#ba1a1a",
+                        "tertiary": "#972c02",
+                        "secondary": "#3e6a00",
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface min-h-screen pt-20 pb-32">
+    <!-- TopNavBar (Standardized) -->
+    <nav
+        class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm border-b border-outline-variant/15">
+        <div class="flex items-center justify-between px-8 py-3 w-full max-w-[1920px] mx-auto">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="ELEKTRON Logo" class="h-10 w-auto object-contain mix-blend-multiply dark:mix-blend-screen" onerror="this.onerror=null; this.outerHTML='<span class=\'material-symbols-outlined text-primary text-3xl\'>science</span>';" />
+                    <h1 class="font-headline font-black text-xl tracking-[0.1em] text-on-surface uppercase pr-1">ELEKTRON</h1>
+                </div>
+                <div class="hidden md:flex items-center gap-6 font-headline text-sm tracking-tight">
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-600 transition-colors pb-1 font-medium"
+                        href="index.html">Dashboard</a>
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-600 transition-colors"
+                        href="map.html">Map Analysis</a>
+                    <a class="text-cyan-700 dark:text-cyan-400 border-b-2 border-cyan-700 dark:border-cyan-400 pb-1 font-medium"
+                        href="database.html">River Database</a>
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-600 transition-colors"
+                        href="analytics.html">Analytics</a>
+                    <a class="text-slate-500 dark:text-slate-400 hover:text-cyan-600 transition-colors"
+                        href="air_quality.html">Air Quality</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="relative group">
+                    <span
+                        class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container rounded-full cursor-pointer transition-all">notifications</span>
+                </div>
+                <div
+                    class="h-8 w-8 rounded-full bg-cyan-800 text-white flex items-center justify-center font-bold text-xs">
+                    JD</div>
+            </div>
+        </div>
+    </nav>
+    <main class="max-w-7xl mx-auto px-6 mt-8 space-y-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div class="space-y-1">
+                <p class="text-xs font-bold uppercase tracking-[0.15em] text-on-surface-variant/70">Global Hydrology
+                    Network</p>
+                <h2 class="font-headline text-3xl font-bold text-primary">River Database</h2>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                    <input type="text" placeholder="Search rivers..."
+                        class="pl-10 pr-4 py-2.5 rounded-xl border border-outline-variant/30 text-sm focus:outline-none focus:ring-2 focus:ring-primary w-64" />
+                </div>
+                <button
+                    class="px-5 py-2.5 rounded-xl bg-surface-container-highest text-primary font-medium text-sm flex items-center gap-2 hover:bg-surface-container-high transition-colors">
+                    <span class="material-symbols-outlined text-lg">filter_alt</span> Filter
+                </button>
+            </div>
+        </div>
+        <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 shadow-sm overflow-hidden">
+            <table class="w-full text-left">
+                <thead
+                    class="bg-surface-container-low border-b border-outline-variant/10 text-xs uppercase tracking-widest text-on-surface-variant">
+                    <tr>
+                        <th class="px-6 py-4 font-bold">River Name</th>
+                        <th class="px-6 py-4 font-bold">Country</th>
+                        <th class="px-6 py-4 font-bold">Avg WQI</th>
+                        <th class="px-6 py-4 font-bold">Primary Pollutants</th>
+                        <th class="px-6 py-4 font-bold">Status</th>
+                        <th class="px-6 py-4 font-bold text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/5">
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Noyyal River</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Tiruppur)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">380</span></td>
+                        <td class="px-6 py-4 text-xs">TDS, Dye Effluents, BOD</td>
+                        <td class="px-6 py-4"><span
+                                class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly
+                                Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button
+                                class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Ganges</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India</td>
+                        <td class="px-6 py-4"><span class="font-bold text-error">420</span></td>
+                        <td class="px-6 py-4 text-xs">Sewage, Industrial Waste, Plastics</td>
+                        <td class="px-6 py-4"><span
+                                class="px-2 py-1 bg-error/10 text-error text-[10px] font-bold uppercase rounded-full">Critical
+                                Warning</span></td>
+                        <td class="px-6 py-4 text-right"><button
+                                class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Citarum</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">Indonesia</td>
+                        <td class="px-6 py-4"><span class="font-bold text-error">450</span></td>
+                        <td class="px-6 py-4 text-xs">Textile Chemicals, Plastics</td>
+                        <td class="px-6 py-4"><span
+                                class="px-2 py-1 bg-error/10 text-error text-[10px] font-bold uppercase rounded-full">Critical
+                                Warning</span></td>
+                        <td class="px-6 py-4 text-right"><button
+                                class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Thames</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">United Kingdom</td>
+                        <td class="px-6 py-4"><span class="font-bold text-secondary">42</span></td>
+                        <td class="px-6 py-4 text-xs">Microplastics, Runoff</td>
+                        <td class="px-6 py-4"><span
+                                class="px-2 py-1 bg-secondary/10 text-secondary text-[10px] font-bold uppercase rounded-full">Acceptable</span>
+                        </td>
+                        <td class="px-6 py-4 text-right"><button
+                                class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Ganga</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Uttarakhand)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">270</span></td>
+                        <td class="px-6 py-4 text-xs">Agricultural Runoff, Plastics</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Brahmaputra</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Tibet)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">120</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Yamuna</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Uttarakhand)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-error">390</span></td>
+                        <td class="px-6 py-4 text-xs">Sewage, Industrial Waste, Heavy Metals</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-error/10 text-error text-[10px] font-bold uppercase rounded-full">Critical Warning</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Godavari</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Maharashtra)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">180</span></td>
+                        <td class="px-6 py-4 text-xs">Agricultural Runoff, Plastics</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Krishna</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Maharashtra)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">150</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Narmada</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Madhya Pradesh)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-secondary">108</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-secondary/10 text-secondary text-[10px] font-bold uppercase rounded-full">Acceptable</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Kaveri</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Karnataka)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">132</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Mahanadi</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Chhattisgarh)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">192</span></td>
+                        <td class="px-6 py-4 text-xs">Agricultural Runoff, Plastics</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Tapi</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Madhya Pradesh)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">120</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Sutlej</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Tibet)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">168</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Ganga</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Uttarakhand)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">270</span></td>
+                        <td class="px-6 py-4 text-xs">Agricultural Runoff, Plastics</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Brahmaputra</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Tibet)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">120</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Yamuna</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Uttarakhand)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-error">390</span></td>
+                        <td class="px-6 py-4 text-xs">Sewage, Industrial Waste, Heavy Metals</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-error/10 text-error text-[10px] font-bold uppercase rounded-full">Critical Warning</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Godavari</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Maharashtra)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">180</span></td>
+                        <td class="px-6 py-4 text-xs">Agricultural Runoff, Plastics</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Krishna</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Maharashtra)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">150</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Narmada</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Madhya Pradesh)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-secondary">108</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-secondary/10 text-secondary text-[10px] font-bold uppercase rounded-full">Acceptable</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Kaveri</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Karnataka)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">132</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Mahanadi</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Chhattisgarh)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-tertiary">192</span></td>
+                        <td class="px-6 py-4 text-xs">Agricultural Runoff, Plastics</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase rounded-full">Highly Polluted</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Tapi</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Madhya Pradesh)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">120</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low/30 transition-colors">
+                        <td class="px-6 py-4 font-headline font-bold text-base text-primary">Sutlej</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">India (Tibet)</td>
+                        <td class="px-6 py-4"><span class="font-bold text-primary">168</span></td>
+                        <td class="px-6 py-4 text-xs">Silt, Minor Runoff</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase rounded-full">Moderate</span></td>
+                        <td class="px-6 py-4 text-right"><button class="text-primary hover:underline text-sm font-medium">Analyze</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+
+</html>

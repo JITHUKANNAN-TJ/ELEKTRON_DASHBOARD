@@ -6,6 +6,7 @@ import asyncio
 import time
 import random
 import json
+import os
 
 try:
     import cv2
@@ -293,8 +294,9 @@ async def report_log(log: LogEntry):
     return {"status": "logged"}
 
 # Mount the root directory to serve static files (index.html, js/, etc.)
-# This MUST be after all other routes
-app.mount("/", StaticFiles(directory=".", html=True), name="static")
+# Use absolute path so this works regardless of where gunicorn is launched from
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+app.mount("/", StaticFiles(directory=ROOT_DIR, html=True), name="static")
 
 if __name__ == "__main__":
     import uvicorn

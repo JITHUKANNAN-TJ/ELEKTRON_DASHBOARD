@@ -46,7 +46,7 @@ export class Logger {
 
     static async reportToServer(logEntry) {
         try {
-            await fetch('http://localhost:5000/api/logs', {
+            await fetch('/api/logs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(logEntry)

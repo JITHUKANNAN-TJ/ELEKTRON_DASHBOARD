@@ -4,7 +4,7 @@ import { Logger } from './logger.js';
  * Resilient ApiService with automatic retries and exponential backoff
  */
 export class ApiService {
-    constructor(baseUrl = 'http://localhost:5000') {
+    constructor(baseUrl = window.location.origin) {
         this.baseUrl = baseUrl;
         this.timeout = 10000;
         this.retryAttempts = 3;

@@ -45,7 +45,7 @@ class CameraStatus(BaseModel):
     active: bool
 
 CAMERA_URL = 0
-CAMERA_ACTIVE = False
+CAMERA_ACTIVE = True  # Always active; camera wakes on request
 
 @app.post("/api/camera_url")
 def update_camera_url(config: CameraConfig):
@@ -229,21 +229,13 @@ class ConnectionManager:
         self.active_connections: list[WebSocket] = []
 
     async def connect(self, websocket: WebSocket):
-        global CAMERA_ACTIVE
         await websocket.accept()
         self.active_connections.append(websocket)
-        # Ensure camera is active when a client connects
-        if len(self.active_connections) > 0:
-            print(f"DEBUG: Client connected ({len(self.active_connections)} active). Engaging camera.")
-            CAMERA_ACTIVE = True
+        print(f"DEBUG: Client connected ({len(self.active_connections)} active).")
 
     def disconnect(self, websocket: WebSocket):
-        global CAMERA_ACTIVE
         self.active_connections.remove(websocket)
-        # Automatically stop camera when no clients are active
-        if len(self.active_connections) == 0:
-            print("DEBUG: All clients disconnected. Releasing camera.")
-            CAMERA_ACTIVE = False
+        print(f"DEBUG: Client disconnected ({len(self.active_connections)} remaining).")
 
     async def broadcast(self, message: str):
         for connection in self.active_connections:

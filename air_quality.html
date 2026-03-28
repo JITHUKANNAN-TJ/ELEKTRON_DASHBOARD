@@ -223,7 +223,7 @@
             grid.innerHTML = "";
 
             try {
-                const url = `http://localhost:5000/api/aqi?city=${city}&limit=50`;
+                const url = `/api/aqi?city=${city}&limit=50`;
                 
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 5000);

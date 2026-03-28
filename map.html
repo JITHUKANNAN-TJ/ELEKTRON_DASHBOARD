@@ -701,7 +701,7 @@
             const city = cityMapping[regionKey] || "Delhi";
             
             try {
-                const url = `http://localhost:5000/api/aqi?city=${city}&limit=1`;
+                const url = `/api/aqi?city=${city}&limit=1`;
                 const res = await fetch(url);
                 if (!res.ok) throw new Error("API Limit or Network");
                 const data = await res.json();

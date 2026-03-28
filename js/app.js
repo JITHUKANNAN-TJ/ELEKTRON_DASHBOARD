@@ -20,7 +20,7 @@ class App {
         this.state.subscribe('sensors', (data) => UI.updateSensors(data));
         this.state.subscribe('aqi', (records) => UI.updateAQI(records));
         this.state.subscribe('camera', (camState) => {
-            const feedUrl = `http://localhost:5000/video_feed?t=${new Date().getTime()}`;
+            const feedUrl = `/video_feed?t=${new Date().getTime()}`;
             UI.updateVideoFeed(feedUrl, !camState.active);
             UI.setZoom(camState.zoom);
         });

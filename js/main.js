@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 1. Initialize core services
     const state = new StateManager();
-    const api = new ApiService('http://localhost:5000');
-    const wsUrl = 'ws://localhost:5000/ws';
+    const api = new ApiService(window.location.origin);
+    const wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = `${wsProto}//${window.location.host}/ws`;
 
     // 2. Initialize dashboard controller
     const dashboard = new Dashboard(state, api, wsUrl);
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Refresh feed element
             const feedImg = document.getElementById('ai-feed');
             if (nextActive) {
-                feedImg.src = `http://localhost:5000/video_feed?t=${Date.now()}`;
+                feedImg.src = `/video_feed?t=${Date.now()}`;
                 document.getElementById('pause-icon').innerText = 'pause';
                 document.getElementById('pause-text').innerText = 'Pause';
             } else {
@@ -87,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const res = await api.updateCameraUrl(url);
             if (res.status === 'success') {
                 state.setState('camera', { url, active: true });
-                document.getElementById('ai-feed').src = `http://localhost:5000/video_feed?t=${Date.now()}`;
+                document.getElementById('ai-feed').src = `/video_feed?t=${Date.now()}`;
             }
         };
 
